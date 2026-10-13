@@ -71,7 +71,7 @@ jobs:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}  # 도장 파일의 비밀번호
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}                  # 도장의 이름표
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}            # 도장 자체의 비밀번호
-        run: |
+        run:
           # 금고에는 파일을 글자 형태(base64)로 저장해 두었으므로,
           # 이를 원래의 도장 파일(.jks)로 복원해서 android/app 폴더에 저장합니다.
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
