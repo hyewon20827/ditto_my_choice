@@ -92,3 +92,60 @@ jobs:
           name: android-aab
           path: build/app/outputs/bundle/release/app-release.aab
           retention-days: 7
+          if-no-files-found: error
+
+      # 11단계: Notion에 빌드 이력 자동 기록
+      - name: Publish build info to Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          APK_ARTIFACT_URL: ${{ steps.upload-apk.outputs.artifact-url }}
+          AAB_ARTIFACT_URL: ${{ steps.upload-aab.outputs.artifact-url }}
+        run: |
+          set -euo pipefail
+          
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          COMMIT_SHORT="${GITHUB_SHA:0:7}"
+          BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          
+          jq -n \
+            --arg db "$NOTION_DATABASE_ID" \
+            --arg name "Ditto Android build ${COMMIT_SHORT}" \
+            --arg date "$BUILD_DATE" \
+            --arg commit "$GITHUB_SHA" \
+            --arg branch "$GITHUB_REF_NAME" \
+            --arg run "$RUN_URL" \
+            --arg apk "$APK_ARTIFACT_URL" \
+            --arg aab "$AAB_ARTIFACT_URL" \
+            '{
+              parent: {database_id: $db},
+              properties: {
+                Name: {
+                  title: [{text: {content: $name}}]
+                },
+                "Build Date": {
+                  date: {start: $date}
+                },
+                Commit: {
+                  rich_text: [{text: {content: $commit}}]
+                },
+                Branch: {
+                  rich_text: [{text: {content: $branch}}]
+                },
+                "GitHub Run": {url: $run},
+                "APK Artifact": {url: $apk},
+                "AAB Artifact": {url: $aab}
+              }
+            }' > /tmp/notion-page.json
+          
+          curl --fail-with-body --silent --show-error \
+            -X POST "https://api.notion.com/v1/pages" \
+            -H "Authorization: Bearer ${NOTION_TOKEN}" \
+            -H "Notion-Version: 2022-06-28" \
+            -H "Content-Type: application/json" \
+            --data @/tmp/notion-page.json
