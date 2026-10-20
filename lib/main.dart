@@ -1,8 +1,10 @@
+import 'package:ditto/env.dart';
 import 'package:ditto/feature/auth/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
+  assert(Env.baseUrl.isNotEmpty, "BASE_URL이 설정되지 않았습니다.");
   runApp(const ProviderScope(child: MyApp()));
 }
 

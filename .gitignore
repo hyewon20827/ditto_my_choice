@@ -50,3 +50,7 @@ app.*.map.json
 # Android Release Signing
 android/key.propertie
 android/app/upload-keystore.jks
+
+env.json
+env.*.json
+!env.example.json
