@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -46,5 +48,5 @@ app.*.map.json
 .fvm/
 
 # Android Release Signing
-android/key.properties
+android/key.propertie
 android/app/upload-keystore.jks
