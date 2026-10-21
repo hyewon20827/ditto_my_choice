@@ -2,12 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:ditto/core/network/auth_interceptor.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../env.dart';
 import '../storage/token_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: 'http://136.67.255.67/api/v1',
+      baseUrl: Env.baseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
     ),
