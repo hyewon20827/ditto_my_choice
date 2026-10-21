@@ -21,13 +21,13 @@ class _AuthApi implements AuthApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<AuthModel>> getDevLogin(String xDevLoginKey) async {
+  Future<ApiResponse<DevAuthModel>> getDevLogin(String xDevLoginKey) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-Dev-Login-Key': xDevLoginKey};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<AuthModel>>(
+    final _options = _setStreamType<ApiResponse<DevAuthModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -38,11 +38,11 @@ class _AuthApi implements AuthApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AuthModel> _value;
+    late ApiResponse<DevAuthModel> _value;
     try {
-      _value = ApiResponse<AuthModel>.fromJson(
+      _value = ApiResponse<DevAuthModel>.fromJson(
         _result.data!,
-        (json) => AuthModel.fromJson(json as Map<String, dynamic>),
+        (json) => DevAuthModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -52,13 +52,15 @@ class _AuthApi implements AuthApi {
   }
 
   @override
-  Future<ApiResponse<AuthModel>> socialLogin(SocialLoginRequest request) async {
+  Future<ApiResponse<SocialLoginModel>> socialLogin(
+    SocialLoginRequest request,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<ApiResponse<AuthModel>>(
+    final _options = _setStreamType<ApiResponse<SocialLoginModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -69,11 +71,48 @@ class _AuthApi implements AuthApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<AuthModel> _value;
+    late ApiResponse<SocialLoginModel> _value;
     try {
-      _value = ApiResponse<AuthModel>.fromJson(
+      _value = ApiResponse<SocialLoginModel>.fromJson(
         _result.data!,
-        (json) => AuthModel.fromJson(json as Map<String, dynamic>),
+        (json) => SocialLoginModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<SocialLoginModel>> refreshToken(
+    String refreshToken,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'refreshToken': refreshToken};
+    final _options = _setStreamType<ApiResponse<SocialLoginModel>>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'application/x-www-form-urlencoded',
+          )
+          .compose(
+            _dio.options,
+            '/auth/refresh',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<SocialLoginModel> _value;
+    try {
+      _value = ApiResponse<SocialLoginModel>.fromJson(
+        _result.data!,
+        (json) => SocialLoginModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

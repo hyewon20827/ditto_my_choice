@@ -19,6 +19,15 @@ class ApiResponse<T> {
           : Error.fromJson(json['error'] as Map<String, dynamic>,)
     );
   }
+
+  /// 성공이고 data가 있으면 data를 반환, 아니면 예외를 던진다.
+  T unwrap() {
+    final value = data;
+    if (!success || value == null) {
+      throw Exception(error ?? 'Unknown API error');
+    }
+    return value;
+  }
 }
 
 class Error{

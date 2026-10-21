@@ -18,7 +18,7 @@ class UserModel {
         id: json['id'] as int,
         nickname: json['nickname'] as String,
         profileImageUrl: json['profileImageUrl'] == null
-        ? null
+            ? null
             : json['profileImageUrl'] as String
     );
   }

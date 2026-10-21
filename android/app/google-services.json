@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920395250276",
+    "project_id": "ditto-eaf92",
+    "storage_bucket": "ditto-eaf92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920395250276:android:a79a37d9ca8d88bfe0fd71",
+        "android_client_info": {
+          "package_name": "com.ditto.portfolio.ditto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBPDGeNkA5AstYh5MxnjFDyKkWyhEBEzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

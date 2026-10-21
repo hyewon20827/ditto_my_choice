@@ -1,9 +1,16 @@
 import 'package:ditto/env.dart';
 import 'package:ditto/feature/auth/auth_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   assert(Env.baseUrl.isNotEmpty, "BASE_URL이 설정되지 않았습니다.");
   runApp(const ProviderScope(child: MyApp()));
 }

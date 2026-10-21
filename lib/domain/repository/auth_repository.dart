@@ -1,6 +1,8 @@
-import '../entity/Auth/auth.dart';
+import 'package:ditto/domain/entity/Auth/dev_login.dart';
+
+import '../entity/Auth/social_login.dart';
 
 abstract interface class AuthRepository {
-  Future<Auth> getDevToken(String xDevLoginKey);
-  Future<Auth> socialLogin(String channel, String idToken);
+  Future<DevLogin> getDevToken(String xDevLoginKey);
+  Future<SocialLogin> socialLogin(String channel, String idToken);
 }

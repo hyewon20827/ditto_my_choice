@@ -1,15 +1,15 @@
 import 'package:ditto/domain/entity/Auth/user.dart';
 
-class Auth {
+class SocialLogin {
   final String accessToken;
   final String tokenType;
   final int expiresIn;
-  final User user;
+  final User? user;
 
-  const Auth({
+  const SocialLogin({
     required this.accessToken,
     required this.tokenType,
     required this.expiresIn,
-    required this.user
+    this.user
   });
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ditto/core/network/api_response.dart';
 import 'package:ditto/data/model/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -17,5 +18,5 @@ abstract class UserApi {
   factory UserApi(Dio dio) = _UserApi;
 
   @GET('/users/me')
-  Future<UserModel> getUserInfo({required String idToken});
+  Future<ApiResponse<UserModel>> getUserInfo({required String idToken});
 }

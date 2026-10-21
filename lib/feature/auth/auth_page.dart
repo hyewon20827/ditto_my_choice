@@ -44,7 +44,6 @@ class Authpage extends ConsumerWidget {
               MainAxisAlignment.center,
               children: [
                 Text(auth.accessToken),
-                Text(auth.user.nickname),
 
                 const SizedBox(height: 20),
 

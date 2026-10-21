@@ -1,11 +1,12 @@
 import 'package:ditto/data/api/auth_api.dart';
 import 'package:ditto/data/model/social_login_request.dart';
+import 'package:ditto/domain/entity/Auth/dev_login.dart';
 import 'package:ditto/domain/repository/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/network/api_response.dart';
-import '../../domain/entity/Auth/auth.dart';
-import '../model/auth_model.dart';
+import '../../domain/entity/Auth/social_login.dart';
+import '../model/social_login_model.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final api = ref.watch(authApiProvider);
@@ -18,24 +19,24 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._authApi);
 
   @override
-  Future<Auth> getDevToken(String xDevLoginKey) async {
+  Future<DevLogin> getDevToken(String xDevLoginKey) async {
     final response = await _authApi.getDevLogin(xDevLoginKey);
-    return _unwrap(response).toEntity();
+    return response.unwrap().toEntity();
   }
 
   @override
-  Future<Auth> socialLogin(String channel, String idToken) async {
+  Future<SocialLogin> socialLogin(String channel, String idToken) async {
     final response = await _authApi.socialLogin(
       SocialLoginRequest(provider: channel, idToken: idToken),
     );
-    return _unwrap(response).toEntity();
+    return response.unwrap().toEntity();
   }
 
-  AuthModel _unwrap(ApiResponse<AuthModel> response) {
+  /*SocialLoginModel _unwrap(ApiResponse<SocialLoginModel> response) {
     final data = response.data;
     if (!response.success || data == null) {
       throw Exception(response.error ?? 'Unknown API error');
     }
     return data;
-  }
+  }*/
 }
